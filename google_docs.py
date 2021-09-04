@@ -1,8 +1,7 @@
-import pprint
 from selenium import webdriver
 import time
 from password import GOOGLE_DOCS
-from selenium.webdriver.common.keys import Keys
+
 
 class Google_Docs:
     def __init__(self):

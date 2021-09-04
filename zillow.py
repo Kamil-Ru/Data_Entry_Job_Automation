@@ -1,4 +1,3 @@
-import pprint
 from selenium import webdriver
 import time
 from password import ZILLOW_URL
@@ -14,8 +13,9 @@ class Zillow:
     def get_data(self):
         # Loading page
         html = self.driver.find_element_by_tag_name('html')
-        html.send_keys(Keys.END)
-        time.sleep(15)
+        for _ in range(10):
+            html.send_keys(Keys.PAGE_DOWN)
+            time.sleep(2)
 
         # Getting list of cards
         list_of_cards = self.driver.find_elements_by_xpath(
@@ -25,14 +25,12 @@ class Zillow:
         data = {}
         a = 0
         for card in list_of_cards:
-            prize = card.find_element_by_xpath("//div[@class='list-card-price']").text
-            address = card.find_element_by_xpath("//address[@class='list-card-addr']").text
-            link = card.find_element_by_xpath("//a[@class='list-card-link list-card-link-top-margin']").get_attribute(
+            prize = card.find_element_by_xpath(".//div[@class='list-card-price']").text
+            address = card.find_element_by_xpath(".//address[@class='list-card-addr']").text
+            link = card.find_element_by_xpath(".//a[@class='list-card-link list-card-link-top-margin']").get_attribute(
                 'href')
             data[str(a)] = {"Address": address, "Prize": prize, "URL": link}
             a = a + 1
 
         self.driver.close()
         return data
-
-        # pprint.pprint(data)
